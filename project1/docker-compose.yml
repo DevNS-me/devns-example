@@ -1,0 +1,21 @@
+# A dummy container representing your Project 1
+
+services:
+  whoami:
+    image: traefik/whoami
+    environment:
+      - WHOAMI_NAME=${COMPOSE_PROJECT_NAME}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${APP_DOMAIN}`) || Host(`${APP_DOMAIN_LAN}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.rule=Host(`${APP_DOMAIN_LAN}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.tls=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80
+    networks:
+      - proxy
+
+networks:
+  default:
+  proxy:
+    name: ${PROXY_NETWORK}
+    external: true

@@ -1,0 +1,58 @@
+name: traefik
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK}
+
+services:
+  traefik:
+    # The official Traefik docker image
+    image: traefik:v3.6
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      #- --accesslog=true # enable to log http calls in container's stdout
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.network=${PROXY_NETWORK} # https://community.traefik.io/t/solved-strange-504-gateway-timeout-behaviour/10573
+      - --providers.docker.exposedbydefault=false
+      # devns.me - For HTTPS certs (https://gist.github.com/pyrou/4f555cd55677331c742742ee6007a73a)
+      # *use this config in App Services:
+      # - traefik.http.routers.${APP_SERVICE}.rule=Host(`${APP_DOMAIN}`)
+      # - traefik.http.routers.${APP_SERVICE}-https.rule=Host(`${APP_DOMAIN}`)
+      # - traefik.http.routers.${APP_SERVICE}-https.tls=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.file.filename=/etc/traefik/tls.yml
+      # ngrok - forward headers (https://medium.com/@_jonas/traefik-kubernetes-ingress-and-x-forwarded-headers-82194d319b0e)
+      - --entrypoints.web.proxyProtocol.insecure=true
+      - --entrypoints.web.forwardedHeaders.insecure=true
+    ports:
+      # The HTTP port
+      - 80:80
+      # The HTTPS port
+      - 443:443
+      # The Web UI (enabled by --api.insecure=true)
+      - 8080:8080
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      # devns.me - For HTTPS certs
+      - ./.docker/traefik:/etc/traefik
+      - certs:/etc/ssl/traefik
+    networks:
+      - proxy
+    restart: unless-stopped
+  
+  traefik-https-helper: # devns.me - For HTTPS certs
+    image: alpine
+    command: sh -c "cd /etc/ssl/traefik
+      && wget ${HTTPS_CERT_URL_1-} -O certificate1.crt
+      && wget ${HTTPS_KEY_URL_1-} -O private1.key
+      && wget ${HTTPS_CERT_URL_2-} -O certificate2.crt
+      && wget ${HTTPS_KEY_URL_2-} -O private2.key"
+      # you can add more cert/key pairs if needed
+    volumes:
+      - certs:/etc/ssl/traefik
+
+volumes: # devns.me - For HTTPS certs
+  certs:

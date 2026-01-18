@@ -1,0 +1,8 @@
+# devns.me - For HTTPS certs
+tls:
+  certificates:
+    - certFile: /etc/ssl/traefik/certificate1.crt
+      keyFile: /etc/ssl/traefik/private1.key
+    - certFile: /etc/ssl/traefik/certificate2.crt
+      keyFile: /etc/ssl/traefik/private2.key
+    # you can add more cert/key pairs if needed
