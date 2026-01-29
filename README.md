@@ -121,6 +121,8 @@ labels:
   - traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80
 ```
 
+> **Note**: The `loadbalancer.server.port=80` refers to the port your application listens on **inside the container**. Change this if your app uses a different port (e.g., 3000 for Node.js/React, 5000 for Flask/Python).
+
 **Access**:
 - URL: http://myproject.localhost
 - Available: Only from your computer

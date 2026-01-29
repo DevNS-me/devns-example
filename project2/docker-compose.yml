@@ -1,21 +1,62 @@
-# A dummy container representing your Project 1
+# ============================================================================
+# Project 2 - HTTP + HTTPS Example with Custom Domain
+# ============================================================================
+# This is a simple example project using the traefik/whoami image
+# Replace this with your actual application container
+# ============================================================================
 
 services:
   whoami:
+    # Example service - replace with your actual application
+    # This uses traefik/whoami as a simple HTTP server for demonstration
     image: traefik/whoami
+
     environment:
+      # Pass project name to the container (optional, for identification)
       - WHOAMI_NAME=${COMPOSE_PROJECT_NAME}
+
+    # =========================================================================
+    # Traefik labels for routing configuration
+    # =========================================================================
     labels:
+      # Enable Traefik reverse proxy for this container
       - traefik.enable=true
+
+      # HTTP Router - accepts requests from both:
+      # - APP_DOMAIN (.localhost for local development)
+      # - APP_DOMAIN_LAN (custom domain for LAN access)
+      # Example: http://project2.localhost OR http://project2-192-168-1-100.example.com
       - traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${APP_DOMAIN}`) || Host(`${APP_DOMAIN_LAN}`)
+
+      # HTTPS Router - only for APP_DOMAIN_LAN (custom domain)
+      # This creates a separate router specifically for HTTPS traffic
+      # Example: https://project2-192-168-1-100.example.com
       - traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.rule=Host(`${APP_DOMAIN_LAN}`)
+
+      # Enable TLS/HTTPS for the HTTPS router
+      # Traefik will automatically use the matching certificate from tls.yml
+      # based on the domain name in APP_DOMAIN_LAN
       - traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.tls=true
+
+      # Tell Traefik which port your application listens on inside the container
+      # This is shared by both HTTP and HTTPS routers
+      # Change this if your app uses a different port (e.g., 3000, 5000)
       - traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80
+
+    # Connect to Traefik's proxy network
     networks:
       - proxy
 
+# ============================================================================
+# Networks
+# ============================================================================
 networks:
+  # Default network for internal container communication
   default:
+
+  # External proxy network shared with Traefik
+  # This network is created by traefik/docker-compose.yml
+  # PROXY_NETWORK value is defined in .env (typically: traefik_network)
   proxy:
     name: ${PROXY_NETWORK}
     external: true
