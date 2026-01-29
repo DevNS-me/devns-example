@@ -1,3 +1,10 @@
+# ============================================================================
+# Traefik Reverse Proxy - Routes traffic to projects by domain name
+# ============================================================================
+# Copy .env.template to .env and configure certificate URLs for HTTPS (optional)
+# Dashboard: http://localhost:8080
+# ============================================================================
+
 name: traefik
 
 networks:
@@ -6,52 +13,41 @@ networks:
 
 services:
   traefik:
-    # The official Traefik docker image
     image: traefik:v3.6
-    # Enables the web UI and tells Traefik to listen to docker
     command:
-      #- --accesslog=true # enable to log http calls in container's stdout
+      #- --accesslog=true  # Uncomment to enable access logs
       - --api.insecure=true
       - --providers.docker=true
-      - --providers.docker.network=${PROXY_NETWORK} # https://community.traefik.io/t/solved-strange-504-gateway-timeout-behaviour/10573
+      - --providers.docker.network=${PROXY_NETWORK}
       - --providers.docker.exposedbydefault=false
-      # devns.me - For HTTPS certs (https://gist.github.com/pyrou/4f555cd55677331c742742ee6007a73a)
-      # *use this config in App Services:
-      # - traefik.http.routers.${APP_SERVICE}.rule=Host(`${APP_DOMAIN}`)
-      # - traefik.http.routers.${APP_SERVICE}-https.rule=Host(`${APP_DOMAIN}`)
-      # - traefik.http.routers.${APP_SERVICE}-https.tls=true
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --providers.file.filename=/etc/traefik/tls.yml
-      # ngrok - forward headers (https://medium.com/@_jonas/traefik-kubernetes-ingress-and-x-forwarded-headers-82194d319b0e)
+      # Header forwarding for proxies like ngrok
       - --entrypoints.web.proxyProtocol.insecure=true
       - --entrypoints.web.forwardedHeaders.insecure=true
     ports:
-      # The HTTP port
-      - 80:80
-      # The HTTPS port
-      - 443:443
-      # The Web UI (enabled by --api.insecure=true)
-      - 8080:8080
+      - 80:80      # HTTP
+      - 443:443    # HTTPS
+      - 8080:8080  # Dashboard
     volumes:
-      # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
-      # devns.me - For HTTPS certs
       - ./.docker/traefik:/etc/traefik
       - certs:/etc/ssl/traefik
     networks:
       - proxy
     restart: unless-stopped
-  
-  traefik-https-helper: # devns.me - For HTTPS certs (auto-downloads and configures certificates)
+
+  # Auto-downloads and configures HTTPS certificates from DevNS.me
+  traefik-https-helper:
     image: alpine
     command: sh /scripts/setup-certs.sh
     env_file:
-      - .env  # Automatically passes all HTTPS_CERT_URL_* and HTTPS_KEY_URL_* variables
+      - .env
     volumes:
       - certs:/etc/ssl/traefik
       - ./.docker/traefik:/etc/traefik
       - ./.docker/traefik/setup-certs.sh:/scripts/setup-certs.sh:ro
 
-volumes: # devns.me - For HTTPS certs
+volumes:
   certs:
