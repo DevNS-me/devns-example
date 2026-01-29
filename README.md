@@ -26,8 +26,8 @@ This repository provides a **recommended Docker + Traefik layout** for local dev
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                     Traefik Proxy                       │
-│  HTTP :80  │  HTTPS :443  │  Dashboard :8080           │
-└──────┬──────────────────┬──────────────────────────────┘
+│  HTTP :80  │  HTTPS :443  │  Dashboard :8080            │
+└──────┬──────────────────┬───────────────────────────────┘
        │                  │
        ├──────────────────┼───► project1.localhost
        │                  │     project1-192-168-1-1.devns.me
