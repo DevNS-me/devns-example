@@ -111,6 +111,7 @@ In your project's `.env`:
 ```env
 APP_DOMAIN=myproject.localhost
 ```
+Replace `myproject` with your project name.
 
 In your project's `docker-compose.yml`:
 ```yaml
@@ -139,7 +140,7 @@ In your project's `.env`:
 ```env
 APP_DOMAIN_LAN=myproject-192-168-1-100.devns.me
 ```
-Replace `192-168-1-100` with your local IP in **dashed format** (dots → dashes).
+Replace `myproject` with your project name and `192-168-1-100` with your local IP in **dashed format** (dots → dashes).
 
 In your project's `docker-compose.yml`:
 ```yaml
@@ -163,6 +164,10 @@ ip addr show | grep "inet " | grep -v 127.0.0.1
 # or
 hostname -I
 
+# Windows (Command Prompt or PowerShell)
+ipconfig
+
+# Look for "IPv4 Address" under your active network adapter
 # Convert: 192.168.1.100 → 192-168-1-100
 ```
 
@@ -199,12 +204,14 @@ In your project's `.env`:
 ```env
 APP_DOMAIN_LAN=myproject-192-168-1-100.example.com
 ```
+Replace `myproject` with your project name, `192-168-1-100` with your local IP in **dashed format**, and `example.com` with your custom domain.
 
 In `traefik/.env`:
 ```env
 HTTPS_CERT_URL_1=https://cert.devns.me/{YOUR_TOKEN}/certificate.crt
 HTTPS_KEY_URL_1=https://cert.devns.me/{YOUR_TOKEN}/private.key
 ```
+Replace with the **complete URLs** provided by the DevNS.me dashboard. The URLs include a security token to keep your private key secure.
 
 In your project's `docker-compose.yml`, add HTTPS labels:
 ```yaml
