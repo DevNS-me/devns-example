@@ -1,3 +1,4 @@
+# Local configuration files (created from .env.template)
 *.env
 
 # Auto-generated files (created by Docker containers)
