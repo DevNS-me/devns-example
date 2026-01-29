@@ -1,1 +1,4 @@
 *.env
+
+# Auto-generated files (created by Docker containers)
+traefik/.docker/traefik/tls.yml

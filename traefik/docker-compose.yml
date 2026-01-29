@@ -43,16 +43,15 @@ services:
       - proxy
     restart: unless-stopped
   
-  traefik-https-helper: # devns.me - For HTTPS certs
+  traefik-https-helper: # devns.me - For HTTPS certs (auto-downloads and configures certificates)
     image: alpine
-    command: sh -c "cd /etc/ssl/traefik
-      && wget ${HTTPS_CERT_URL_1-} -O certificate1.crt
-      && wget ${HTTPS_KEY_URL_1-} -O private1.key
-      && wget ${HTTPS_CERT_URL_2-} -O certificate2.crt
-      && wget ${HTTPS_KEY_URL_2-} -O private2.key"
-      # you can add more cert/key pairs if needed
+    command: sh /scripts/setup-certs.sh
+    env_file:
+      - .env  # Automatically passes all HTTPS_CERT_URL_* and HTTPS_KEY_URL_* variables
     volumes:
       - certs:/etc/ssl/traefik
+      - ./.docker/traefik:/etc/traefik
+      - ./.docker/traefik/setup-certs.sh:/scripts/setup-certs.sh:ro
 
 volumes: # devns.me - For HTTPS certs
   certs:
