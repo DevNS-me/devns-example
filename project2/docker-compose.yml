@@ -25,12 +25,12 @@ services:
       # HTTP Router - accepts requests from both:
       # - APP_DOMAIN (.localhost for local development)
       # - APP_DOMAIN_LAN (custom domain for LAN access)
-      # Example: http://project2.localhost OR http://project2-192-168-1-100.example.com
+      # Example: http://project2.localhost OR http://project2-192-168-1-10.example.com
       - traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${APP_DOMAIN}`) || Host(`${APP_DOMAIN_LAN}`)
 
       # HTTPS Router - only for APP_DOMAIN_LAN (custom domain)
       # This creates a separate router specifically for HTTPS traffic
-      # Example: https://project2-192-168-1-100.example.com
+      # Example: https://project2-192-168-1-10.example.com
       - traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.rule=Host(`${APP_DOMAIN_LAN}`)
 
       # Enable TLS/HTTPS for the HTTPS router

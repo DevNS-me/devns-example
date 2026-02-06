@@ -17,7 +17,7 @@ This repository provides a **recommended Docker + Traefik layout** for local dev
 
 - **Runs multiple projects simultaneously** without port conflicts (no more `:3000`, `:8080`, `:5000`)
 - **Routes traffic by domain name** - each project gets its own domain instead of different ports
-- **Test from any device on your network** - Access your projects from phones, tablets, or other computers using DevNS.me domains (e.g., `myapp-192-168-1-100.devns.me`)
+- **Test from any device on your network** - Access your projects from phones, tablets, or other computers using DevNS.me domains (e.g., `myapp-192-168-1-10.devns.me`)
 - **HTTPS support for local development** - Test OAuth, payments, PWAs, and modern browser APIs that require secure connections
 - **Scales easily** as you add more projects - just create a new docker-compose and add it to the network
 
@@ -30,10 +30,10 @@ This repository provides a **recommended Docker + Traefik layout** for local dev
 └──────┬──────────────────┬───────────────────────────────┘
        │                  │
        ├──────────────────┼───► project1.localhost
-       │                  │     project1-192-168-1-1.devns.me
+       │                  │     project1-192-168-1-10.devns.me
        │                  │
        └──────────────────┼───► project2.localhost
-                          └───► project2-192-168-1-1.example.com (HTTPS)
+                          └───► project2-192-168-1-10.example.com (HTTPS)
 ```
 
 ## Prerequisites
@@ -87,13 +87,13 @@ Traefik dashboard will be available at http://localhost:8080
 # Project 1 - HTTP only
 cd project1
 cp .env.template .env
-# Edit .env: Replace 192-168-1-1 with your actual local IP (dashed format)
+# Edit .env: Replace 192-168-1-10 with your actual local IP (dashed format)
 docker compose up -d
 
 # Project 2 - HTTP + HTTPS
 cd project2
 cp .env.template .env
-# Edit .env: Replace 192-168-1-1 with your local IP and example.com with your custom domain
+# Edit .env: Replace 192-168-1-10 with your local IP and example.com with your custom domain
 docker compose up -d
 ```
 
@@ -140,9 +140,9 @@ labels:
 
 In your project's `.env`:
 ```env
-APP_DOMAIN_LAN=myproject-192-168-1-100.devns.me
+APP_DOMAIN_LAN=myproject-192-168-1-10.devns.me
 ```
-Replace `myproject` with your project name and `192-168-1-100` with your local IP in **dashed format** (dots → dashes).
+Replace `myproject` with your project name and `192-168-1-10` with your local IP in **dashed format** (dots → dashes).
 
 In your project's `docker-compose.yml`:
 ```yaml
@@ -153,7 +153,7 @@ labels:
 ```
 
 **Access**:
-- URL: http://myproject-192-168-1-100.devns.me
+- URL: http://myproject-192-168-1-10.devns.me
 - Available: From any device on your local network
 - HTTPS: Not available (no certificate)
 
@@ -170,7 +170,7 @@ hostname -I
 ipconfig
 
 # Look for "IPv4 Address" under your active network adapter
-# Convert: 192.168.1.100 → 192-168-1-100
+# Convert: 192.168.1.10 → 192-168-1-10
 ```
 
 ---
@@ -204,9 +204,9 @@ ipconfig
 
 In your project's `.env`:
 ```env
-APP_DOMAIN_LAN=myproject-192-168-1-100.example.com
+APP_DOMAIN_LAN=myproject-192-168-1-10.example.com
 ```
-Replace `myproject` with your project name, `192-168-1-100` with your local IP in **dashed format**, and `example.com` with your custom domain.
+Replace `myproject` with your project name, `192-168-1-10` with your local IP in **dashed format**, and `example.com` with your custom domain.
 
 In `traefik/.env`:
 ```env
@@ -226,13 +226,13 @@ labels:
 ```
 
 **Access**:
-- HTTP: http://myproject-192-168-1-100.example.com
-- HTTPS: https://myproject-192-168-1-100.example.com
+- HTTP: http://myproject-192-168-1-10.example.com
+- HTTPS: https://myproject-192-168-1-10.example.com
 - Available: From any device on your local network
 
 **Example**: See [project2/.env.template](project2/.env.template) and [project2/docker-compose.yml](project2/docker-compose.yml)
 
-> **Important**: Only **dashed-format** addresses work with HTTPS wildcard certificates. `myproject.192.168.1.100.example.com` (dots) will NOT work, use `myproject-192-168-1-100.example.com` (dashes) instead.
+> **Important**: Only **dashed-format** addresses work with HTTPS wildcard certificates. `myproject.192.168.1.10.example.com` (dots) will NOT work, use `myproject-192-168-1-10.example.com` (dashes) instead.
 
 #### Adding Multiple Custom Domains / Certificates
 
@@ -299,7 +299,7 @@ Having HTTPS support in local development is essential for testing:
 - Verify certificates were downloaded: `docker exec traefik-traefik-1 ls -la /etc/ssl/traefik/`
 - Check certificate URLs in `traefik/.env` are correct (no typos in tokens)
 - Verify `tls.yml` was generated: `docker exec traefik-traefik-1 cat /etc/traefik/tls.yml`
-- Ensure domain uses **dashed format** (e.g., `app-192-168-1-100.example.com`)
+- Ensure domain uses **dashed format** (e.g., `app-192-168-1-10.example.com`)
 - Restart Traefik after certificate changes: `cd traefik && docker compose restart`
 
 ### Can't access from other devices
@@ -307,7 +307,7 @@ Having HTTPS support in local development is essential for testing:
 - Verify local IP is correct in `APP_DOMAIN_LAN`
 - Check firewall allows ports 80 and 443
 - Ensure devices are on the same network
-- Try accessing by IP first: `http://192.168.1.100`
+- Try accessing by IP first: `http://192.168.1.10`
 
 ## Learn More
 
