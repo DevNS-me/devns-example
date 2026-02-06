@@ -196,9 +196,9 @@ ipconfig
      dev.example.com.  IN  NS  ns2.devns.me.
      ```
 
-3. **Register domain** at [account.devns.me](https://account.devns.me)
+3. **Register your domain** at [account.devns.me](https://account.devns.me) by clicking "Add Domain" in the Domain Management page
 
-4. **Get certificate URLs** from DevNS.me dashboard (`certificate.crt` and `private.key` URLs)
+4. **Get certificate URLs** by clicking the `certificate.crt` and `private.key` buttons (URLs are copied to clipboard)
 
    ![DevNS.me Dashboard - Add Domain and Get Certificate URLs](images/add-domain-certs.png)
 
