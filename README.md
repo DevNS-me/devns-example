@@ -309,12 +309,14 @@ Having HTTPS support in local development is essential for testing:
 - Ensure devices are on the same network
 - Try accessing by IP first: `http://192.168.1.10`
 
+### DNS resolution issues
+
+- Some ISPs may fail to resolve `*.devns.me` domains
+- **Solution**: Use Google DNS servers (`8.8.8.8`, `8.8.4.4`) in your network settings
+- Test with: `nslookup 192-168-1-10.devns.me 8.8.8.8`
+
 ## Learn More
 
 - **DevNS.me Website**: https://devns.me
 - **DevNS.me Account Portal**: https://account.devns.me (for custom domain registration)
 - **Traefik Documentation**: https://doc.traefik.io/traefik/
-
-## License
-
-This example repository is provided as-is for educational purposes. Use freely for your local development setup.
