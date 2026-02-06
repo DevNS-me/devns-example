@@ -200,6 +200,8 @@ ipconfig
 
 4. **Get certificate URLs** from DevNS.me dashboard (`certificate.crt` and `private.key` URLs)
 
+   ![DevNS.me Dashboard - Add Domain and Get Certificate URLs](images/add-domain-certs.png)
+
 **Configuration**:
 
 In your project's `.env`:
