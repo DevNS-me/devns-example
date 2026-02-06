@@ -198,7 +198,7 @@ ipconfig
 
 3. **Register domain** at [account.devns.me](https://account.devns.me)
 
-4. **Get certificate URLs** from DevNS.me dashboard (certificate.crt and private.key URLs)
+4. **Get certificate URLs** from DevNS.me dashboard (`certificate.crt` and `private.key` URLs)
 
 **Configuration**:
 
@@ -234,17 +234,11 @@ labels:
 
 > **Important**: Only **dashed-format** addresses work with HTTPS wildcard certificates. `myproject.192.168.1.100.example.com` (dots) will NOT work, use `myproject-192-168-1-100.example.com` (dashes) instead.
 
-## Adding Multiple Custom Domains / Certificates
+#### Adding Multiple Custom Domains / Certificates
 
 The Traefik setup supports multiple custom domains with different SSL certificates. The system automatically detects and configures all certificate pairs you add to the `.env` file.
 
-### How to Add Certificates
-
-1. **Register your custom domain(s)** at [account.devns.me](https://account.devns.me)
-
-2. **Get certificate URLs** from your DevNS.me dashboard for each domain
-
-3. **Add certificate pairs to `traefik/.env`**:
+**Add certificate pairs to `traefik/.env`**:
 
 ```env
 # Domain 1 (e.g., example.com)
@@ -276,8 +270,6 @@ That's it! The system will automatically:
 - Download all certificates
 - Generate the TLS configuration
 - Configure Traefik to use them
-
-No need to manually edit `docker-compose.yml` or `tls.yml` files.
 
 ## Common Use Cases for HTTPS in Development
 
