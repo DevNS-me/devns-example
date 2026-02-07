@@ -275,14 +275,18 @@ That's it! The system will automatically:
 
 ## Common Use Cases for HTTPS in Development
 
-Having HTTPS support in local development is essential for testing:
+Having HTTPS support in local development is essential for:
 
-- **OAuth Integrations**: Facebook Login, Google Sign-In, GitHub OAuth
-- **Payment Gateways**: Stripe, PayPal, Apple Pay
-- **PWA Features**: Service Workers, Web Push Notifications
-- **Modern Browser APIs**: Geolocation, Camera, Microphone, Clipboard
-- **Secure Cookies**: Testing `Secure` and `SameSite` cookie attributes
-- **Third-party Services**: Any API that requires HTTPS callbacks/webhooks
+**Third-party service integrations** that require HTTPS endpoints for security:
+- OAuth providers (Google, Facebook, GitHub), SAML, OpenID Connect
+- Payment processors (Stripe, PayPal, Apple Pay)
+- Webhooks and callbacks from external APIs
+- MCP (Model Context Protocol) servers and AI integrations
+
+**Modern browser features** that only work in secure contexts:
+- PWA capabilities (Service Workers, Web Push, offline functionality)
+- Device access (camera, microphone, geolocation, Bluetooth, USB)
+- Advanced APIs (Clipboard, WebAuthn, Payment Request)
 
 ## Troubleshooting
 
