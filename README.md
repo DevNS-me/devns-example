@@ -56,12 +56,27 @@ devns-example/
 ├── project1/             # Example: HTTP only with .localhost and .devns.me
 │   ├── docker-compose.yml
 │   └── .env.template     # Project environment variables (copy to .env)
-└── project2/             # Example: HTTP + HTTPS with custom domain
-    ├── docker-compose.yml
-    └── .env.template     # Project environment variables (copy to .env)
+├── project2/             # Example: HTTP + HTTPS with custom domain
+│   ├── docker-compose.yml
+│   └── .env.template     # Project environment variables (copy to .env)
+└── skills/               # AI assistant skill (devns-setup) — see Quick Start with an AI Assistant
 ```
 
 > **Note**: Each directory contains a `.env.template` file that must be copied to `.env` and configured with your values. The `.env` files are in `.gitignore` as they contain local-specific configuration.
+
+## Quick Start with an AI Assistant (Skill)
+
+This repo ships an installable **skill** for AI coding assistants (Claude Code, Codex, OpenCode, and many other agents that follow the [Agent Skills](https://agentskills.io/) standard). It can explain DevNS.me, set up Traefik, and scaffold a new project for you — interactively confirming paths, the project slug, and `.env` values.
+
+Install it into your agents with the following command:
+
+```bash
+npx skills add DevNS-me/devns-example --skill devns-setup
+```
+
+Then just ask, e.g. *"Set up DevNS with Traefik and create a project called myapp"*.
+
+Prefer to do it by hand? Follow the manual Quick Start below.
 
 ## Quick Start
 
