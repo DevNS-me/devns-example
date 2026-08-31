@@ -1,6 +1,6 @@
 # DevNS.me Example Setup with Traefik
 
-This repository demonstrates how to set up a modern local development environment using Docker, Traefik, and [DevNS.me](https://devns.me) for multi-project hosting with custom domains and HTTPS support.
+This repository demonstrates how to set up a modern local development environment using Docker, Traefik, and [DevNS.me](https://www.devns.me/) for multi-project hosting with custom domains and HTTPS support.
 
 ## What is DevNS.me?
 
@@ -338,6 +338,6 @@ Having HTTPS support in local development is essential for:
 
 ## Learn More
 
-- **DevNS.me Website**: https://devns.me
+- **DevNS.me Website**: https://www.devns.me/
 - **DevNS.me Account Portal**: https://account.devns.me (for custom domain registration)
 - **Traefik Documentation**: https://doc.traefik.io/traefik/
